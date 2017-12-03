@@ -50,6 +50,20 @@ public class Client {
 			 
 	}
 	
+	private static String makeRequest(String page, String host) {
+//		snprintf(sendline, MAXSUB, 
+//			     "GET %s HTTP/1.0\r\n"  // POST or GET, both tested and works. Both HTTP 1.0 HTTP 1.1 works, but sometimes 
+//			     "Host: %s\r\n"     // but sometimes HTTP 1.0 works better in localhost type
+//			     "Content-type: application/x-www-form-urlencoded\r\n"
+//			     "Content-length: %d\r\n\r\n"
+//			     "%s\r\n", page, host, (unsigned int)strlen(poststr), poststr);
+		String format =  "GET %s HTTP/1.0 \r\n"
+						+"Host: %s\r\n"
+						+"Content-type: application/xwww-form-urlencoded\r\n\\r\\n";
+		String request = String.format(format, page, host);
+		return request;
+	}
+	
 	public static void main(String[] args) {
 		int numArgs = args.length;
 		String hostName = "";
@@ -107,10 +121,15 @@ public class Client {
 			
 			
 			
-			while ((userInput = stdIn.readLine()) != null) {
-				out.println(userInput);
-				System.out.println("From server: " + in.readLine());
-			}
+			//while ((userInput = stdIn.readLine()) != null) {
+			String fromServer = "";
+				String request = makeRequest(userInput, hostName);
+				out.print(request);
+				while((fromServer = in.readLine()) != null) {
+					System.out.println("From server: " + fromServer);
+				}
+				
+			//}
 			
 			out.close();
 			in.close();
